@@ -65,4 +65,4 @@ if __name__ == '__main__':
     formatter = Formatter.Formatter()
     DB.connect()
     DB.setup_tables()
-    app.run(debug=True)
+    app.run(debug=False)
