@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cards</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            background-image: url("{{ url_for('static', filename='image/Cards_BG.webp') }}");
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .navbar {
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #333;
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+            z-index: 1000; /* Added z-index */
+        }
+        .navbar a {
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 20px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 15px;
+        }
+        .navbar a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+            margin-top: 70px; /* Space for the fixed navbar */
+            padding: 20px;
+        }
+        .card {
+            background-color: #fff;
+            width: 45%; /* Adjusted width for 2 cards per row */
+            padding: 30px;
+            margin: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            position: relative;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        .card h2 {
+            font-family: 'Georgia', serif;
+            font-size: 26px;
+            margin-bottom: 15px;
+            color: #1a5d4d;
+        }
+        .card p {
+            color: #555;
+            margin: 5px 0;
+            font-size: 18px;
+        }
+        .card img {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 120px; /* Increased size for a larger poststamp look */
+            height: 120px;
+            border-radius: 10%;
+            border: 2px solid #e74c3c;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('create') }}">Create Card</a>
+        <a href="{{ url_for('cards') }}">Cards</a>
+    </div>
+
+    <div class="card-container">
+        {% for card in cards %}
+            <div class="card">
+                <h2>{{ card['title'] }}</h2>
+                <p><strong>To:</strong> {{ card['receiver'] }}</p>
+                <p><strong>From:</strong> {{ card['sender'] }}</p>
+                <p><strong>Content:</strong> {{ card['content'] }}</p>
+                <img src="{{ url_for('static', filename=card['image_url']) }}" alt="Card Image">
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
+<script>
+    // Logic to create a gnome that steals letters from the cards.
+    document.addEventListener('DOMContentLoaded', function() {
+        const stolenLetters = [];
+
+        function createGnome() {
+            const gnome = document.createElement('img');
+            gnome.src = "{{ url_for('static', filename='image/Gnome.png') }}";
+            gnome.style.position = 'fixed';
+            gnome.style.width = '250px';
+            gnome.style.height = '250px';
+            gnome.style.cursor = 'pointer';
+            gnome.style.zIndex = '1001'; // Ensure it appears above other elements
+            gnome.style.transform = `rotate(${Math.random() * 360}deg)`; // Random rotation
+            document.body.appendChild(gnome);
+
+            function positionGnome() {
+                const x = Math.random() * (window.innerWidth - 100);
+                const y = Math.random() * (window.innerHeight - 100);
+                gnome.style.left = `${x}px`;
+                gnome.style.top = `${y}px`;
+            }
+
+            function stealLetter() {
+                const cards = document.querySelectorAll('.card p, .card h2');
+                cards.forEach(card => {
+                    const text = card.textContent;
+                    if (text.length === 0) return;
+
+                    const randomIndex = Math.floor(Math.random() * text.length);
+                    const letter = text[randomIndex];
+                    stolenLetters.push({ element: card, letter: letter, index: randomIndex });
+
+                    card.textContent = text.slice(0, randomIndex) + text.slice(randomIndex + 1);
+                });
+            }
+
+            function returnLetters() {
+                stolenLetters.forEach(item => {
+                    const text = item.element.textContent;
+                    item.element.textContent = text.slice(0, item.index) + item.letter + text.slice(item.index);
+                });
+                stolenLetters.length = 0;
+            }
+
+            function removeGnome() {
+                gnome.remove();
+                returnLetters();
+                setTimeout(createGnome, Math.random() * 5000 + 5000); // Reappear after 5-10 seconds
+            }
+
+            gnome.addEventListener('click', removeGnome);
+            positionGnome();
+            stealLetter();
+        }
+
+        createGnome();
+    });
+</script>
