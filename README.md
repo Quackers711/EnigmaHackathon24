@@ -6,13 +6,20 @@ This Hackathon only lasted about 4 hours.
 
 I started off the Hackathon by brainstorming a few ideas and wrote them down below. This was also my very first hackathon and I'm quite happy with what I managed to make. I ended up winning the solo category.
 
+## How to run
+To run the project simply run:
+* `source .venv/bin/activate`
+* `python3 Frontend.py`
+* If the venv did not work properly just run `./.venv/bin/python Frontend.py`
+* Go to `http://127.0.0.1:5000`
+
 ## Ideas
 * Flask frontend with database.
 * Leet speak converter on christmas cards - A funny twist to make it more than just a card generator.
 * Page to see all cards.
 * Page to create a card.
 * Some sort of images on the cards.
-* A "Drillenisse" (elf) that randomly steals letters from the christmas cards - Another twist to expand the "lore" behind the case.
+* A "Drillenisse" (elf) that randomly steals letters from the christmas cards - Another twist to expand the "lore" behind the case. (This was added later than the initial brainstorm)
 
 ## Implementation
 I started off by implementing a simple Flask frontend with the basic route I would need:
