@@ -4,7 +4,7 @@ We were then given the task to create a new service to create christmas cards.
 
 This Hackathon only lasted about 4 hours.
 
-I started off the Hackathon by brainstorming a few ideas and wrote them down below. This was also my very first hackathon and I'm quite happy with what I managed to make. I ended up winning the solo category.
+I started off the Hackathon by brainstorming a few ideas and wrote them down below. This was also my very first hackathon and I'm quite happy with what I managed to make.
 
 ## How to run
 To run the project simply run:
